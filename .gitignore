@@ -1,0 +1,23 @@
+# Build
+build/
+*.o
+*.a
+*.so
+
+# IDE
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Core dumps
+core
+*.core
+
+# Binary
+bin/

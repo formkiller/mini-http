@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiniHTTP Test Page</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 MiniHTTP Server is Running!</h1>
+
+    <div class="card">
+      <h2>What is this?</h2>
+      <p>
+        A lightweight <strong>HTTP/1.1</strong> server built from scratch
+        using the <a href="https://github.com/chenshuo/muduo">muduo</a>
+        network library (C++11).
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Features</h2>
+      <ul>
+        <li><strong>Custom HTTP Parser</strong> — State machine that processes requests byte by byte from muduo::Buffer</li>
+        <li><strong>URL Routing</strong> — map-based route table: <code>/</code>, <code>/health</code>, <code>/about</code></li>
+        <li><strong>Static Files</strong> — Serve HTML/CSS/JS/images with proper MIME types and 404 handling</li>
+        <li><strong>Keep-Alive</strong> — HTTP/1.1 persistent connections with automatic timeout</li>
+        <li><strong>Multi-threaded</strong> — Uses EventLoopThreadPool (one loop per thread)</li>
+        <li><strong>Security</strong> — Directory traversal protection (<code>/../</code> returns 403)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Endpoints</h2>
+      <table>
+        <tr><th>Method</th><th>Path</th><th>Description</th></tr>
+        <tr><td>GET</td><td><a href="/">/</a></td><td>This page (index.html)</td></tr>
+        <tr><td>GET</td><td><a href="/about">/about</a></td><td>About the server</td></tr>
+        <tr><td>GET</td><td><a href="/health">/health</a></td><td>Health check (JSON)</td></tr>
+        <tr><td>GET</td><td><a href="/style.css">/style.css</a></td><td>CSS file (MIME: text/css)</td></tr>
+        <tr><td>GET</td><td><a href="/nonexistent">/nonexistent</a></td><td>404 Not Found demo</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>How to test</h2>
+      <pre><code># Start the server
+./bin/http-server 8080 4 ./www
+
+# Test with curl
+curl -v http://localhost:8080/
+curl http://localhost:8080/health
+curl http://localhost:8080/about
+curl -I http://localhost:8080/          # HEAD request
+curl http://localhost:8080/nonexistent  # 404
+
+# Stress test with ApacheBench
+ab -n 1000 -c 10 http://localhost:8080/
+
+# Test security
+curl http://localhost:8080/../etc/passwd  # Should return 403
+</code></pre>
+    </div>
+
+    <div class="footer">
+      <p>Built with ❤️ using muduo and C++ | &copy; 2026 MiniHTTP</p>
+    </div>
+  </div>
+</body>
+</html>
