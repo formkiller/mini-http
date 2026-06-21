@@ -67,7 +67,8 @@ void HttpResponse::appendToBuffer(Buffer* output) const
   output->append(closeConnection_ ? "Connection: close\r\n"
                                   : "Connection: Keep-Alive\r\n");
 
-  // 7. 空行 + 响应体
+  // 7. 空行 + 响应体（HEAD 请求时跳过 body）
   output->append("\r\n");
-  output->append(body_);
+  if (!headOnly_)
+    output->append(body_);
 }

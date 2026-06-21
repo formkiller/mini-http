@@ -38,6 +38,12 @@ class Router
     postHandlers_[path] = std::move(handler);
   }
 
+  // 注册兜底处理器（当没有精确匹配时调用）
+  void setDefaultHandler(Handler handler)
+  {
+    defaultHandler_ = std::move(handler);
+  }
+
   // 查找匹配的处理器
   // 返回空 Handler（nullptr）表示 404
   Handler findHandler(const HttpRequest& req) const
@@ -50,12 +56,13 @@ class Router
     if (it != handlers.end())
       return it->second;
 
-    return nullptr;  // 未找到 → 404
+    return defaultHandler_;  // 兜底处理器
   }
 
  private:
   std::map<std::string, Handler> getHandlers_;
   std::map<std::string, Handler> postHandlers_;
+  Handler defaultHandler_;
 };
 
 #endif  // HTTP_ROUTER_H

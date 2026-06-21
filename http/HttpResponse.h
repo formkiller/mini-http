@@ -49,8 +49,11 @@ class HttpResponse
   void setCloseConnection(bool on) { closeConnection_ = on; }
   bool closeConnection() const { return closeConnection_; }
 
+  // HEAD 模式：只返回头，不返回 body
+  void setHeadOnly(bool on) { headOnly_ = on; }
+
   // 将完整的 HTTP 响应写入 Buffer
-  // 包括：状态行 + 响应头 + 空行 + 响应体
+  // 包括：状态行 + 响应头 + 空行 + 响应体（headOnly_ 时跳过 body）
   void appendToBuffer(muduo::net::Buffer* output) const;
 
  private:
@@ -60,6 +63,7 @@ class HttpResponse
   std::map<std::string, std::string> headers_;
   std::string body_;
   bool closeConnection_;
+  bool headOnly_ = false;
 };
 
 #endif  // HTTP_HTTPRESPONSE_H

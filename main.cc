@@ -44,8 +44,8 @@ int main(int argc, char* argv[])
   // 静态文件处理器
   StaticFileHandler fileHandler(docRoot);
 
-  // 默认路由：兜底所有请求，交给静态文件处理器
-  server.router().get("/", [&fileHandler](const HttpRequest& req) {
+  // 兜底路由：未匹配到具体路由时，交给静态文件处理器
+  server.router().setDefaultHandler([&fileHandler](const HttpRequest& req) {
     return fileHandler.handleRequest(req);
   });
 

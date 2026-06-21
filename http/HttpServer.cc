@@ -89,10 +89,10 @@ void HttpServer::onMessage(const TcpConnectionPtr& conn,
       response.setCloseConnection(true);
     }
 
-    // ⑤ HEAD 方法不返回 body
+    // ⑤ HEAD 方法只返回头，不返回 body
     if (req->method() == "HEAD")
     {
-      response.setBody("");
+      response.setHeadOnly(true);
     }
 
     // ⑥ 发送响应
